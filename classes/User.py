@@ -6,7 +6,7 @@ class User:
         self.name = name
         self.password = password
     
-    def signUp(self):
+    def new(self):
         self.password = hashlib.sha256(self.password.encode()).hexdigest()
         return Request.newUser(self.name, self.password)
 
