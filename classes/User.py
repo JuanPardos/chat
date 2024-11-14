@@ -1,4 +1,4 @@
-from core import Request
+from core import request
 import hashlib
 
 class User:
@@ -8,8 +8,8 @@ class User:
     
     def new(self):
         self.password = hashlib.sha256(self.password.encode()).hexdigest()
-        return Request.newUser(self.name, self.password)
+        return request.newUser(self.name, self.password)
 
     def login(self):
         self.password = hashlib.sha256(self.password.encode()).hexdigest()
-        return Request.login(self.name, self.password)
+        return request.login(self.name, self.password)

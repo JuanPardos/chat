@@ -1,3 +1,4 @@
 **__pycache__**
 env/dev.py
 .venv/
+data/private_key.pem

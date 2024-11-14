@@ -1,1 +1,2 @@
-endpoint = "http://endpoint:port/"  # Change this to the actual endpoint
+endpoint = "http://localhost:5000/"  # Change this to the actual endpoint. 5000 is the default port for Flask.
+chacha20Key = bytes.fromhex('6d404758e6d806c64833c72721645ef9846fec6f473b312f709f226fbd5bfc9d')  # Please change it

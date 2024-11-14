@@ -1,4 +1,4 @@
-from core import Request
+from core import request
 
 class Message:
     def __init__(self, chat, sender, text, hash, timestamp):
@@ -9,4 +9,4 @@ class Message:
         self.timestamp = timestamp
     
     def new(self):
-        return Request.newMessage(self.chat, self.sender, self.text)
+        return request.newMessage(self.chat, self.sender, self.text)
