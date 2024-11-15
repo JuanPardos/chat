@@ -2,7 +2,8 @@ from classes import User, Chat, Message
 
 def parseUser(response):
     user = User(
-        name=response.get('name')
+        username=response.get('username'),
+        password=response.get('password')
     )
     return user
 

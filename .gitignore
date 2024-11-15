@@ -1,4 +1,6 @@
 **__pycache__**
 env/dev.py
 .venv/
+src/data/private_key.pem
 data/private_key.pem
+.vscode/
