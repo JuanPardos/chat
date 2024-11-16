@@ -1,1 +1,0 @@
-endpoint = "http://localhost:5000/"  # Change this to the actual endpoint. 5000 is the default port for Flask.

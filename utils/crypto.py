@@ -7,15 +7,16 @@ from core import request
 
 seed = dev.simmetricSeed
 
-# Encrypts with the simmetric session key. BOTH.
+# Encrypts with the simmetric session key.
 def encryptData(sessionKey, message):
     cipher = ChaCha20.new(key=seed, nonce=bytes.fromhex(sessionKey))
     ciphertext = cipher.encrypt(str(message).encode())
     return ciphertext.hex()
 
 def decryptData(sessionKey, ciphertext):
+    hex_ciphertext = ciphertext.text.strip().strip('"') 
     cipher = ChaCha20.new(key=seed, nonce=bytes.fromhex(sessionKey))
-    message = cipher.decrypt(bytes.fromhex(ciphertext))
+    message = cipher.decrypt(bytes.fromhex(hex_ciphertext))
     return message.decode()
 
 # Generate client key pair. RSA 2048 bits. CLIENT SIDE.

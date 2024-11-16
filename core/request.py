@@ -12,15 +12,27 @@ if(endpoint == "http://endpoint:port/"):
 
 def newUser(sessionKey, username, password):
     url = endpoint + "newUser"
-    data = {"username": username, "password": password}    # Password is hashed in the backend
+    data = {"username": username, "password": password}
     try:
         response = requests.post(url, json=crypto.encryptData(sessionKey, data), headers=headers)
-        return apiResponse.parseUser(response.json())
+        return apiResponse.parseUser(crypto.decryptData(sessionKey, response))
     except requests.exceptions.ConnectionError:
         return "Connection error"
     except requests.exceptions.HTTPError:
         if response.status_code == 409:
             return "User already exists"
+        
+def login(sessionKey, username, password):
+    url = endpoint + "login"
+    data = {"username": username, "password": password}
+    try:
+        response = requests.post(url, json=crypto.encryptData(sessionKey, data), headers=headers)
+        return apiResponse.parseUser(crypto.decryptData(sessionKey, response))
+    except requests.exceptions.ConnectionError:
+        return "Connection error"
+    except requests.exceptions.HTTPError:
+        if response.status_code == 401:
+            return "Invalid credentials"
         
 def newChat(sessionKey, user1, user2):
     url = endpoint + "newChat"
@@ -47,17 +59,6 @@ def newMessage(sessionKey, chat, sender, text):
             return "Chat not found"
 
 
-def login(sessionKey, username, password):
-    url = endpoint + "login"
-    data = {"username": username, "password": password}
-    try:
-        response = requests.post(url, json=crypto.encryptData(sessionKey, data), headers=headers)
-        return apiResponse.parseUser(response.json())
-    except requests.exceptions.ConnectionError:
-        return "Connection error"
-    except requests.exceptions.HTTPError:
-        if response.status_code == 401:
-            return "Invalid credentials"
 
 def getOnlineUsers(sessionKey):
     url = endpoint + "getOnlineUsers"

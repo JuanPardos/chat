@@ -1,4 +1,6 @@
 from flask import Flask, request, jsonify
+from services import userService
+from hashlib import sha256
 import crypto
 import ast
 
@@ -17,21 +19,22 @@ def keyExchange():
     encryptedKey = crypto.encryptKey(sessionKey, publicKey)
     return jsonify(encryptedKey)
 
-@app.post('/login')
-def login():
-    data = request.get_json()
-    username = data.get('username')
-    password = data.get('password')
-    if username == 'juan' and password == 'ed08c290d7e22f7bb324b15cbadce35b0b348564fd2d5f95752388d86d71bcca':  # juan PRUEBAS
-        return jsonify({'message': 'Login successful'})
-    return jsonify({'message': 'Login failed'})
-
 @app.post('/newUser')
 def newUser():
     rawData = request.get_json()
     data = ast.literal_eval(crypto.decryptData(sessionKey, rawData))
     username = data['username']
-    password = data['password']
+    password = sha256(data['password'].encode()).hexdigest()
+    
+    user = userService.insert(username, password)
+    return jsonify(crypto.encryptData(sessionKey,user))
 
-    #TODO: Save user in database
-    return jsonify({'message': 'User created'})
+@app.post('/login')
+def login():
+    rawData = request.get_json()
+    data = ast.literal_eval(crypto.decryptData(sessionKey, rawData))
+    username = data['username']
+    password = sha256(data['password'].encode()).hexdigest()
+    
+    user = userService.get(username, password)
+    return jsonify(crypto.encryptData(sessionKey,user))

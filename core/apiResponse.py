@@ -1,11 +1,17 @@
-from classes import User, Chat, Message
+from classes.Message import Message
+from classes.User import User
+from classes.Chat import Chat
+import ast
 
 def parseUser(response):
-    user = User(
-        username=response.get('username'),
-        password=response.get('password')
-    )
-    return user
+    response = ast.literal_eval(response)
+    if response != None:
+        user = User(
+            username=response.get('username'),
+            password=response.get('password')
+        )
+        return user
+    return None
 
 def parseChat(response):
     chat = Chat(
